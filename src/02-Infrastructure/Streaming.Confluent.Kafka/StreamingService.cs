@@ -1,49 +1,42 @@
 ﻿using Confluent.Kafka;
+using Microsoft.Extensions.Configuration;
+using Streaming.Contracts;
 
 namespace Streaming.Confluent.Kafka
 {
-	internal class StreamingService
+	internal class StreamingService : IStreamingService
 	{
-		public StreamingService()
+		private readonly IConfiguration _configuration;
+		public StreamingService(IConfiguration configuration)
 		{
+			_configuration = configuration;
 		}
 
-		public void Publish()
+		public void Publish(string topic, string type, object message)
 		{
-			//const string topic = "purchases";
+			var streamingConfiguration = _configuration.GetSection("Streaming")
+				.GetChildren()
+				.ToDictionary(q => q.Key, q => q.Value);
 
-			//string[] users = { "eabara", "jsmith", "sgarcia", "jbernard", "htanaka", "awalther" };
-			//string[] items = { "book", "alarm clock", "t-shirts", "gift card", "batteries" };
+			using (var producer = new ProducerBuilder<string, string>(streamingConfiguration).Build())
+			{
+				producer.Produce(topic, new Message<string, string>
+				{
+					Key = type,
+					Value = System.Text.Json.JsonSerializer.Serialize(message)
+				},
+				(deliveryReport) =>
+				{
+					if (deliveryReport.Error.Code != ErrorCode.NoError)
+					{
+					}
+					else
+					{
+					}
+				});
 
-			//using (var producer = new ProducerBuilder<string, string>(
-			//	configuration.AsEnumerable()).Build())
-			//{
-			//	var numProduced = 0;
-			//	Random rnd = new Random();
-			//	const int numMessages = 10;
-			//	for (int i = 0; i < numMessages; ++i)
-			//	{
-			//		var user = users[rnd.Next(users.Length)];
-			//		var item = items[rnd.Next(items.Length)];
-
-			//		producer.Produce(topic, new Message<string, string> { Key = user, Value = item },
-			//			(deliveryReport) =>
-			//			{
-			//				if (deliveryReport.Error.Code != ErrorCode.NoError)
-			//				{
-			//					Console.WriteLine($"Failed to deliver message: {deliveryReport.Error.Reason}");
-			//				}
-			//				else
-			//				{
-			//					Console.WriteLine($"Produced event to topic {topic}: key = {user,-10} value = {item}");
-			//					numProduced += 1;
-			//				}
-			//			});
-			//	}
-
-			//	producer.Flush(TimeSpan.FromSeconds(10));
-			//	Console.WriteLine($"{numProduced} messages were produced to topic {topic}");
-			//}
+				producer.Flush();
+			}
 		}
 	}
 }

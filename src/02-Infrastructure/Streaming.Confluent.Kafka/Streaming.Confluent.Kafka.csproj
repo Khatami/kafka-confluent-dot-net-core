@@ -7,5 +7,11 @@
 
 	<ItemGroup>
 		<PackageReference Include="Confluent.Kafka" Version="1.9.3" />
+		<PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="8.0.0" />
+		<PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="8.0.0" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <ProjectReference Include="..\..\01-Core\Streaming.Contracts\Streaming.Contracts.csproj" />
 	</ItemGroup>
 </Project>
