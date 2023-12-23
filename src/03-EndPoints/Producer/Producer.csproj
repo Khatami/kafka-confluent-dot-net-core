@@ -16,7 +16,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Controllers\" />
+    <ProjectReference Include="..\..\01-Core\Streaming.Contracts\Streaming.Contracts.csproj" />
   </ItemGroup>
 
 </Project>
