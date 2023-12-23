@@ -5,7 +5,7 @@ services:
     image: ${DOCKER_REGISTRY-}consumer    
     build:
       context: .
-      dockerfile: EndPoints/Consumer/Dockerfile
+      dockerfile: 03-EndPoints/Consumer/Dockerfile
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=https://+:443;http://+:80
@@ -20,7 +20,7 @@ services:
     image: ${DOCKER_REGISTRY-}producer
     build:
       context: .
-      dockerfile: EndPoints/Producer/Dockerfile
+      dockerfile: 03-EndPoints/Producer/Dockerfile
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=https://+:443;http://+:80

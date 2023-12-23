@@ -17,7 +17,7 @@ namespace Producer.Controllers
 		[HttpPost]
 		public IActionResult Produce()
 		{
-			_streamingService.Publish("test", typeof(TestEvent).ToString(), new TestEvent() { Id = 1, Name = "Hamed Khatami" });
+			_streamingService.AppendToStreamAsync("test", typeof(TestEvent).ToString(), new TestEvent() { Id = 1, Name = "Hamed Khatami" });
 
 			return Ok();
 		}

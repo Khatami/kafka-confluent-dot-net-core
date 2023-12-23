@@ -1,6 +1,7 @@
 ﻿using Confluent.Kafka;
 using Microsoft.Extensions.Configuration;
 using Streaming.Contracts;
+using System.Text.Json;
 
 namespace Streaming.Confluent.Kafka
 {
@@ -12,9 +13,9 @@ namespace Streaming.Confluent.Kafka
 			_configuration = configuration;
 		}
 
-		public void Publish(string topic, string type, object message)
+		public void AppendToStreamAsync(string topic, string type, object message)
 		{
-			var streamingConfiguration = _configuration.GetSection("Streaming")
+			var streamingConfiguration = _configuration.GetSection("KafkaStreaming")
 				.GetChildren()
 				.ToDictionary(q => q.Key, q => q.Value);
 
@@ -23,15 +24,14 @@ namespace Streaming.Confluent.Kafka
 				producer.Produce(topic, new Message<string, string>
 				{
 					Key = type,
-					Value = System.Text.Json.JsonSerializer.Serialize(message)
+					Value = JsonSerializer.Serialize(message)
 				},
-				(deliveryReport) =>
+
+				deliveryReport =>
 				{
 					if (deliveryReport.Error.Code != ErrorCode.NoError)
 					{
-					}
-					else
-					{
+						throw new ArgumentException();
 					}
 				});
 

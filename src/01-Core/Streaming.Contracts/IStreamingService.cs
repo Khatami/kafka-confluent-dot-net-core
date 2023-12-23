@@ -2,6 +2,6 @@
 {
 	public interface IStreamingService
 	{
-		void Publish(string topic, string type, object message);
+		void AppendToStreamAsync(string topic, string type, object message);
 	}
 }

@@ -17,6 +17,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\01-Core\Streaming.Contracts\Streaming.Contracts.csproj" />
+    <ProjectReference Include="..\..\02-Infrastructure\Streaming.Confluent.Kafka\Streaming.Confluent.Kafka.csproj" />
   </ItemGroup>
 
 </Project>

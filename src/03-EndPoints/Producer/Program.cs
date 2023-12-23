@@ -1,3 +1,4 @@
+using Streaming.Confluent.Kafka.Extensions;
 
 namespace Producer
 {
@@ -11,8 +12,11 @@ namespace Producer
 
 			builder.Services.AddControllers();
 			// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+
 			builder.Services.AddEndpointsApiExplorer();
 			builder.Services.AddSwaggerGen();
+
+			builder.Services.RegisterStreamingServices();
 
 			var app = builder.Build();
 
@@ -26,7 +30,6 @@ namespace Producer
 			app.UseHttpsRedirection();
 
 			app.UseAuthorization();
-
 
 			app.MapControllers();
 
